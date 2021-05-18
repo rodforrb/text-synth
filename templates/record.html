@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Persian TTS</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="../static/styles.css">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+      <script src="../static/recorder.js"></script>
+   </head>
+   <body>
+      <div class="container text-center">
+        <div id="main">
+          <h1>Persian Text Transcription</h1>
+          <h2>Speech Synthesizer</h2>
+          <div id="header">
+            Voice transcription &#xb7; <a href="/upload">Upload files</a>
+          </div>
+          <div id="toolbar">
+            <button id="rec">Start</button>
+            <!-- <button id="copy">Copy</button> -->
+            <!-- <div id="lang">
+              <input id="btn_fa" type="radio" name="lang" value="fa"/> Persian
+              <input id="btn_en" type="radio" name="lang" value="en"/> English
+            </div> -->
+          </div>
+          <textarea id="output_fa" rows="6" cols="60"></textarea>
+          <!-- <textarea id="output_en" rows="10" cols="60"></textarea> -->
+        </div>
+
+        <div id="info">
+          <h2>About</h2>
+          <ul>
+            <li>Press the Start/Stop button to record your sentence</li>
+            <li>The resulting text is automatically copied to the clipboard</li>
+            <li>More improvements TBD</li>
+          </ul>
+        </div>
+      </div>
+   </body>
+</html>

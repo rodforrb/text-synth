@@ -1,0 +1,32 @@
+
+html, body {
+    background-color: skyblue;
+    height: 100%;
+}
+
+.container {
+    padding-top: 2em;
+    background-color: white;
+    height: 100%;
+    padding-bottom: 4em;
+}
+
+#main {
+    height: 80%;
+}
+
+#toolbar {
+    padding-top: 3em;
+}
+
+#info {
+    padding-top: 2em;
+}
+
+.rec {
+    padding: 0.5em;
+}
+
+.file-result {
+    padding: 1em;
+}
