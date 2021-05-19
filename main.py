@@ -39,7 +39,10 @@ def app_factory(config, app_name, blueprints=None):
     from commands import new_app, test_cmd
 
     # you can use Empty directly if you wish
-    app = App(app_name, template_folder=os.path.join(PROJECT_PATH, 'templates'))
+    app = App(app_name,
+        template_folder=os.path.join(PROJECT_PATH, 'templates'),
+        static_folder=os.path.join(PROJECT_PATH, 'static')
+    )
     config = config_str_to_obj(config)
 
     app.cli.add_command(new_app)
