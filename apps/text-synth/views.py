@@ -75,7 +75,8 @@ def data_received(data):
 @io.on('stop')
 def stop_recording():
     print("Stopped")
-    parser.parse_audio(stream)
+    result = parser.parse_audio(stream)
+    emit('Text received', result)
 
 @io.on('language selected')
 def lang_select(data):

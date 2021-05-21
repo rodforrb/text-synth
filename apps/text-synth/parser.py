@@ -37,9 +37,12 @@ class Parser:
 
         res = json.loads(self.rec.FinalResult())
 
-        emit('Text received', res['text'])
+
+        # emit('Text received', res['text']) # for live feedback
 
         stream.flush()
+
+        return res['text']
 
     # parse audio file from upload
     def parse_file(self, file_in):
