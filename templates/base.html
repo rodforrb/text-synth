@@ -16,8 +16,23 @@
 <body>
 
     <div class="container text-center">
-        {% block content %}
-        {% endblock %}
+        <h1>Persian Text Transcription</h1>
+
+        {% block h2 %} {% endblock %}
+        
+        <div id="header">
+            <a href="/record">Voice transcription</a> &#xb7; <a href="/upload">Upload files</a>
+          </div>
+
+        <div id="main">
+            {% block content %}
+            {% endblock %}
+
+            <div id="info">
+                {% block info %}
+                {% endblock %}
+            </div>
+        </div>
     </div>
     
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>

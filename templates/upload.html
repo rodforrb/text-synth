@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <title>Persian TTS</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-      <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-   </head>
-   <body>
-      <div class="container text-center">
-        <div id="main">
-          <h1 >Persian Text Transcription</h1>
-          <h2> File Upload</h2>
-          <div id="header">
-            <a href="/record">Voice transcription</a> &#xb7; Upload files
-          </div>
-          <div id="toolbar">
-            <form enctype="multipart/form-data" method="POST" action="">
-              <p><input type="file" name="file" accept="audio/*" multiple></p>
-              <p><input type="submit" value="Upload"></p>
-            </form>
-          </div>
-        </div>
-        
-        <div id="info">
-          <h2>About</h2>
-          <ul>
-            <li>Browse to select an audio file</li>
-            <li>Multiple files can be selected by holding shift when selecting them</li>
-            <li>Press upload to send files and begin transcription</li>
-          </ul>
-        </div>
-      </div>
-   </body>
-</html>
+{% extends "base.html" %}}
+
+  {% block h2 %}
+  <h2> File Upload</h2>
+  {% endblock %}
+
+  {% block content %}
+  <div id="toolbar">
+    <form enctype="multipart/form-data" method="POST" action="">
+      <p><input type="file" name="file" accept="audio/*" multiple></p>
+      <p><input type="submit" value="Upload"></p>
+    </form>
+  </div>
+  {% endblock %}
+
+  {% block info %}
+  <h2>About</h2>
+    <ul>
+      <li>Browse to select an audio file</li>
+      <li>Multiple files can be selected by holding shift when selecting them</li>
+      <li>Press upload to send files and begin transcription</li>
+    </ul>
+  {% endblock %}

@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
+  {% block h2 %}
+  <h2>File Upload</h2>
+  {% endblock %}
+  
   {% block content %}
-    <div id="main">
-      <h1>Persian Text Transcription</h1>
-      <h2>File Upload</h2>
-      <div id="header">
-        <a href="/">Voice transcription</a> &#xb7; <a href="/upload">Upload more files</a>
-      </div>
       
       <div id="results">
         {% for entry in entries %}
@@ -18,7 +16,6 @@
         </div>
         {% endfor %}
       </div>
-    </div>
   {% endblock %}
 
   {% block scripts %}
