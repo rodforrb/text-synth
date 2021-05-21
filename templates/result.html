@@ -1,34 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <title>Persian TTS</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
-      <link rel="stylesheet" href="../static/styles.css">
-      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-      <script src="../static/output.js"></script>
-   </head>
-   <body>
-      <div class="container text-center">
-        <div id="main">
-          <h1>Persian Text Transcription</h1>
-          <h2>File Upload</h2>
-          <div id="header">
-            <a href="/">Voice transcription</a> &#xb7; <a href="/upload">Upload more files</a>
-          </div>
-          
-          <div id="results">
-            {% for entry in entries %}
-            <div class="file-result">
-              <div <span class="filename">{{entry.filename}}</span> <input type="button" class="save" value="Save"/></div>
-              <div class="filecontents">
-                {{entry.filecontents}}
-              </div>
-            </div>
-            {% endfor %}
+{% extends "base.html" %}
+
+  {% block content %}
+    <div id="main">
+      <h1>Persian Text Transcription</h1>
+      <h2>File Upload</h2>
+      <div id="header">
+        <a href="/">Voice transcription</a> &#xb7; <a href="/upload">Upload more files</a>
+      </div>
+      
+      <div id="results">
+        {% for entry in entries %}
+        <div class="file-result">
+          <div <span class="filename">{{entry.filename}}</span> <input type="button" class="save" value="Save"/></div>
+          <div class="filecontents">
+            {{entry.filecontents}}
           </div>
         </div>
+        {% endfor %}
       </div>
-   </body>
-</html>
+    </div>
+  {% endblock %}
+
+  {% block scripts %}
+    <script src="static/scripts/output.js"></script>
+  {% endblock %}

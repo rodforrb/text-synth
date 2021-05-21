@@ -1,3 +1,8 @@
+/*  Dynamically creates the file outputs for result.html.
+    The page is pre-filled with the text output. This script then attaches
+    the 'save' button for each file result to a function todownload a text
+    file with its contents.
+*/
 $(document).ready(function() {
 
   // iterate each entry element to attach download button

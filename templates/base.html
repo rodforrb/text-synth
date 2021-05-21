@@ -6,20 +6,21 @@
     <meta name="keywords" content="">
     <meta name="author" content="">
 
-    <title>text-synth</title>
+    <title>Text Synthesizer</title>
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
    
     {% block styles %}{% endblock %}
 </head>
 <body>
 
-    {% block content %}
-    {% endblock %}
-
-    <!-- JS IMPORTS
-    <script type="application/javascript" src=""></script>
-    -->
+    <div class="container text-center">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>
