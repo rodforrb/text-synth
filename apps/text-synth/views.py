@@ -2,9 +2,7 @@ from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request
 from flask_socketio import SocketIO, emit
 from flask_session import Session
-from extensions import io
-app = Blueprint('text-synth', __name__, template_folder='templates')
-
+from extensions import socketio
 
 import json
 import os
@@ -13,6 +11,7 @@ from werkzeug.utils import secure_filename
 
 from .parser import Parser
 
+app = Blueprint('text-synth', __name__, template_folder='templates')
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 ALLOWED_EXTENSIONS = {'wav'}
 
@@ -62,23 +61,23 @@ def upload():
     return render_template('upload.html')
 
 
-@io.on('connect')
+@socketio.on('connect')
 def test_connect():
     print('Connected!')
     stream.flush()
 
 
-@io.on('Audio sent')
+@socketio.on('Audio sent')
 def data_received(data):
     nBytes = stream.write(data['data'])
 
-@io.on('stop')
+@socketio.on('stop')
 def stop_recording():
     print("Stopped")
     result = parser.parse_audio(stream)
     emit('Text received', result)
 
-@io.on('language selected')
+@socketio.on('language selected')
 def lang_select(data):
     pass
 
