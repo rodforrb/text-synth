@@ -1,7 +1,7 @@
 /*  Dynamically creates the file outputs for result.html.
     The page is pre-filled with the text output. This script then attaches
-    the 'save' button for each file result to a function todownload a text
-    file with its contents.
+    the 'save' and 'copy' buttons for each file result with a function to download 
+    or copy the text output.
 */
 $(document).ready(function() {
 
@@ -30,5 +30,14 @@ $(document).ready(function() {
           element.click();
           document.body.removeChild(element);
         }
+      
+      
+    var copyButton = entry.querySelector(".copy");
+    copyButton.onclick = function () {
+      entry.querySelector(".filecontents").focus();
+      entry.querySelector(".filecontents").select();
+      document.execCommand('copy');
+      copyButton.focus();
     }
+  }
 });
