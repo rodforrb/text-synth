@@ -14,27 +14,24 @@
     {% block styles %}{% endblock %}
 </head>
 <body>
-
     <div class="container text-center">
-        <h1>Persian Text Transcription</h1>
+        <h1>Audio Text Transcription</h1>
 
         {% block h2 %} {% endblock %}
         
         <div id="header">
             <a href="/record">Voice transcription</a> &#xb7; <a href="/upload">Upload files</a>
-          </div>
+        </div>
 
         <div id="main">
             {% block content %}
             {% endblock %}
-
             <div id="info">
                 {% block info %}
                 {% endblock %}
             </div>
         </div>
     </div>
-    
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     {% block scripts %}{% endblock %}
 </body>

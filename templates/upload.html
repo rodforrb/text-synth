@@ -1,12 +1,18 @@
 {% extends "base.html" %}}
 
   {% block h2 %}
-  <h2> File Upload</h2>
+  <h2>File Upload</h2>
   {% endblock %}
 
   {% block content %}
   <div id="toolbar">
     <form enctype="multipart/form-data" method="POST" action="">
+      <div id="select">
+        <select id="language" name="language">
+            <option value="en">English</option>
+            <option value="fa">Persian</option>
+        </select>
+      </div>
       <p><input type="file" name="file" accept="audio/*" multiple></p>
       <p><input type="submit" value="Upload"></p>
     </form>

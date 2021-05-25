@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request
 from flask_socketio import SocketIO, emit
 from flask_session import Session
-from extensions import socketio
+from extensions import io
 
 import json
 import os
@@ -12,9 +12,8 @@ from werkzeug.utils import secure_filename
 from .parser import Parser
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
-APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 ALLOWED_EXTENSIONS = {'wav'}
-
+LANGUAGES = ['en', 'fa']
 
 stream = BytesIO()
 
@@ -31,56 +30,53 @@ def record():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
+        # verify a language is submitted
+        if 'language' not in request.values.keys():
+            flash('No language selected')
+            return redirect(request.url)
+        # verify a valid language is passed
+        if request.values['language'] not in LANGUAGES:
+            flash('No language selected')
+            return redirect(request.url)
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
         
+        language = request.values['language']
         # grab list of files
         files = request.files.getlist('file')
-
-        # list of {filename, text} objects for output page
+        # list of {filename, text} objects for result page
         entries = []
-
         for file in files:
             # if user does not select any file
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
-
-            # if file is valid
+            # if file is valid, parse file
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-
                 # synthesize text from audio file
-                filecontents = parser.parse_file(file)
-
+                filecontents = parser.parse_file(file, language)
+                # store text to send to result page
                 entries.append({"filename" : filename, "filecontents" : filecontents})
-        return render_template('result.html', entries=entries)
 
+        return render_template('result.html', entries=entries)
     return render_template('upload.html')
 
-
-@socketio.on('connect')
+@io.on('connect')
 def test_connect():
     print('Connected!')
     stream.flush()
 
-
-@socketio.on('Audio sent')
+@io.on('Audio sent')
 def data_received(data):
-    nBytes = stream.write(data['data'])
+    stream.write(data['data'])
 
-@socketio.on('stop')
+@io.on('stop')
 def stop_recording():
-    print("Stopped")
     result = parser.parse_audio(stream)
     emit('Text received', result)
-
-@socketio.on('language selected')
-def lang_select(data):
-    pass
-
 
 # check if file has valid extension
 def allowed_file(filename):

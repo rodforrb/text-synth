@@ -20,7 +20,7 @@ if os.environ['FLASK_ENV'] == 'development':
 
 ma = Marshmallow()
 glue = JSGlue()
-socketio = SocketIO()
+io = SocketIO()
 rq = RQ()
 security = Security()
 

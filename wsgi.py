@@ -23,7 +23,7 @@ if __name__ == '__main__':
         **app.config.get('SERVER_OPTIONS', {})
     }
 
-    from extensions import socketio
+    from extensions import io
 
-    socketio.run(app, **kwargs)
+    io.run(app, **kwargs)
     

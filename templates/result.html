@@ -5,15 +5,17 @@
   {% endblock %}
   
   {% block content %}
-      
       <div id="results">
         {% for entry in entries %}
-        <div class="file-result">
-          <div <span class="filename">{{entry.filename}}</span> <input type="button" class="save" value="Save"/></div>
-          <div class="filecontents">
-            {{entry.filecontents}}
+          <div class="file-result">
+            <div <span class="filename">{{entry.filename}}</span> 
+              <input type="button" class="save" value="Save"/>
+              <input type="button" class="copy" value="Copy"/>
+            </div>
+            <div>
+              <textarea class="filecontents" rows="6" cols="60">{{entry.filecontents}}</textarea>
+            </div>
           </div>
-        </div>
         {% endfor %}
       </div>
   {% endblock %}
