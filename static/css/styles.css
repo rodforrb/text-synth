@@ -4,13 +4,6 @@ html, body {
     height: 100%;
 }
 
-.container {
-    padding-top: 2em;
-    background-color: white;
-    height: 100%;
-    padding-bottom: 4em;
-}
-
 #main {
     height: 80%;
 }
@@ -33,4 +26,83 @@ html, body {
 
 .file-result {
     padding: 1em;
+}
+
+.flex-container {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+    -webkit-align-items: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    height: 100%;
+    }
+
+.nav-left {
+    width: 10%;
+    max-width: 240px;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    }
+
+.nav-right {
+    width: 10%;
+    max-width: 240px;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    }
+
+.main {
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    padding-top: 3em;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    flex-direction: column;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto;
+    align-items: center;
+    background-color: white;
+    }
+
+.content {
+    flex: 1 1 auto;
+}
+
+.info {
+    flex: 0 1 auto;
 }
