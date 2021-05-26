@@ -1,33 +1,30 @@
-## Project structure from flask-empty
+# Web-based text synthesizer/transcription for audo and files
+Using Flask, sockets, Vosk, Empty
 
 ## main.py
 
-Holds your project class definition and factory.
+Holds the project class definition and factory.
 
 ## wsgi.py
 
-This is where your project instance lives.
+This is where the project instance lives.
 
 ## config.py
 
-Holds most of your configuration, like which extensions to use, which
-blueprints to load, how looging should work, etc.
-
-## commands.py
-
-You can add custom commands to your project here.
+Holds most of the configuration.
 
 ## extensions.py
 
-Your extensions are defined and loaded here. If you're adding a new
-extension to your project, might be a good idea to create its instance
-here (and load it through your configuration).
+Project extensions are defined and loaded here.
 
-## mixins.py
+## apps/text-synth/
 
-Right now it only has a http mixin for some standard http behavior. Useful
-for vanilla web projects. Not so much if you're building a web service.
+Main Python app functionality.
 
-## tests/
+## templates/
 
-Project wide non-server dependent tests go here.
+HTML templates for Flask.
+
+## static/
+
+Static files for Flask.
