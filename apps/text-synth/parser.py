@@ -7,14 +7,19 @@ from vosk import Model, KaldiRecognizer
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 class Parser:
-    def __init__(self):
+    def __init__(self, allowed_languages):
+        self.languages = []
         # language models
         # English
-        model_en = Model(APP_ROOT + "/models/model-en")
-        self.rec_en = KaldiRecognizer(model_en, 16000)
+        if 'en' in allowed_languages:
+            model_en = Model(APP_ROOT + "/models/model-en")
+            self.rec_en = KaldiRecognizer(model_en, 16000)
+            self.languages.append('en')
         # Persian
-        model_fa = Model(APP_ROOT + "/models/model-fa")
-        self.rec_fa = KaldiRecognizer(model_fa, 16000)
+        if 'fa' in allowed_languages:
+            model_fa = Model(APP_ROOT + "/models/model-fa")
+            self.rec_fa = KaldiRecognizer(model_fa, 16000)
+            self.languages.append('fa')
 
     # parse microphone audio from input stream (only full recording support for now)
     def parse_audio(self, stream):
@@ -56,11 +61,11 @@ class Parser:
         return BytesIO(p_out)
     
     def get_recognizer(self, language):
+        if language not in self.languages:
+            raise ValueError('Language not supported or activated')
         rec = None
         if language == 'en':
             rec = self.rec_en
         elif language == 'fa':
             rec = self.rec_fa
-        if rec == None:
-            raise ValueError('No valid language was provided')
         return rec

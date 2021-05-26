@@ -9,8 +9,12 @@
     <form enctype="multipart/form-data" method="POST" action="">
       <div id="select">
         <select id="language" name="language">
+          {% if 'en' in languages %}
             <option value="en">English</option>
+          {% endif %}
+          {% if 'fa' in languages %}
             <option value="fa" selected="selected">Persian</option>
+          {% endif %}
         </select>
       </div>
       <p><input type="file" name="file" accept="audio/*" multiple></p>

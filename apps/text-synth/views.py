@@ -13,11 +13,15 @@ from .parser import Parser
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav'}
-LANGUAGES = ['en', 'fa']
+
+LANGUAGES = [
+    # 'en',
+    'fa'
+]
 
 stream = BytesIO()
 
-parser = Parser()
+parser = Parser(LANGUAGES)
 
 @app.route('/')
 def index():
@@ -62,7 +66,7 @@ def upload():
                 entries.append({"filename" : filename, "filecontents" : filecontents})
 
         return render_template('result.html', entries=entries)
-    return render_template('upload.html')
+    return render_template('upload.html', languages=LANGUAGES)
 
 @io.on('connect')
 def test_connect():
