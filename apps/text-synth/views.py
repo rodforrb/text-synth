@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from .parser import Parser
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
-ALLOWED_EXTENSIONS = {'wav'}
+ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3'}
 
 LANGUAGES = [
     # 'en',
