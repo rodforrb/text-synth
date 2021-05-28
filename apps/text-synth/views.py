@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_socketio import SocketIO, emit
 from flask_session import Session
 from extensions import io
-
+import time
 import json
 import os
 from io import BytesIO
@@ -61,7 +61,10 @@ def upload():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 # synthesize text from audio file
+                start_time = time.time()
                 filecontents = parser.parse_file(file, language)
+                elapsed_time = time.time() - start_time
+                print(f'File transcribed in {elapsed_time} seconds')
                 # store text to send to result page
                 entries.append({"filename" : filename, "filecontents" : filecontents})
 
