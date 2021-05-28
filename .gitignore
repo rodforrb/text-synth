@@ -2,4 +2,4 @@ venv
 __pycache__
 .mypy_cache
 .vscode
-apps/text-synth/models
+apps/text-synth/models/model*

@@ -7,7 +7,6 @@ flask-rq2
 marshmallow
 flask-marshmallow
 flask-jsglue
-eventlet
 flask-socketio==4.3.2
 flask-debugtoolbar
 flask-session
