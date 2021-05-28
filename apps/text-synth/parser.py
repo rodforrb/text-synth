@@ -41,14 +41,23 @@ class Parser:
         rec = self.get_recognizer(language)
         file_data = file_in.read()
         data_bytes = self.convert_audio(file_data)
+        text_chunks = []
         # feed input to recognizer in increments
         while True:
             data = data_bytes.read(4000)
             if len(data) == 0:
                 break
-            rec.AcceptWaveform(data)
-        res = json.loads(rec.FinalResult())
-        return res['text']
+            
+            if rec.AcceptWaveform(data):
+                res = json.loads(rec.Result())['text']
+                print(res)
+                text_chunks.append(res)
+            else:
+                print(f'Partial: {rec.PartialResult()}')
+            
+        res = json.loads(rec.FinalResult())['text']
+        text_chunks.append(res)
+        return ' '.join(text_chunks)
 
     # convert audio input to .wav format bytes
     def convert_audio(self, input):
