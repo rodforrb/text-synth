@@ -16,6 +16,3 @@ def test_valid_json_():
 
     for key, value in json_dict.items():
         assert py_dict.get(key) == value
-
-
-

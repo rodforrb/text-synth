@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask import render_template, flash, redirect, url_for, request
 from flask_socketio import SocketIO, emit
 from flask_session import Session
-from extensions import io
 import time
 import json
 import os
@@ -10,7 +9,7 @@ from io import BytesIO
 from werkzeug.utils import secure_filename
 
 from .parser import Parser
-
+from .sockets import *
 app = Blueprint('text-synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3'}
 
@@ -19,17 +18,11 @@ LANGUAGES = [
     'fa'
 ]
 
-stream = BytesIO()
-
 parser = Parser(LANGUAGES)
 
 @app.route('/')
 def index():
     return redirect('/upload')
-
-@app.route('/record')
-def record():
-    return render_template('record.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -71,21 +64,10 @@ def upload():
         return render_template('result.html', entries=entries)
     return render_template('upload.html', languages=LANGUAGES)
 
-@io.on('connect')
-def test_connect():
-    print('Connected!')
-    stream.flush()
-
-@io.on('Audio sent')
-def data_received(data):
-    stream.write(data['data'])
-
-@io.on('stop')
-def stop_recording():
-    result = parser.parse_audio(stream)
-    emit('Text received', result)
-
 # check if file has valid extension
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        
+
+print("Server ready")

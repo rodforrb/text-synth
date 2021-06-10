@@ -3,11 +3,16 @@
     the 'save' and 'copy' buttons for each file result with a function to download 
     or copy the text output.
 */
+
 $(document).ready(function() {
+
+  var fileOutputs = [];
 
   // iterate each entry element to attach download button
   var entries = document.getElementsByClassName("file-result");
   for (let entry of entries) {
+    var outputBox = entry.querySelector(".filecontents");
+    fileOutputs.push(outputBox);
 
     // attach function to download button
     var downloadButton = entry.querySelector(".save");
@@ -17,7 +22,7 @@ $(document).ready(function() {
           // create output textfile name
           const txt_filename = in_filename.split('.').slice(0, -1).join('.') + ".txt";
           // get output text from entry
-          const text = entry.querySelector(".filecontents").innerText;
+          const text = outputBox.innerText;
 
           // set up download element
           var element = document.createElement('a');

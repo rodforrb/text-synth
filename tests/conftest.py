@@ -1,0 +1,83 @@
+import pytest
+import os
+from xprocess import ProcessStarter
+import socket
+
+@pytest.fixture
+def myserver(xprocess, request):
+    class Starter(ProcessStarter):
+        # startup pattern
+        pattern = "Server ready"
+
+        rootdir = str(request.config.rootdir)
+        # os.chdir(rootdir)
+        os.environ['PYTHONUNBUFFERED'] = '1'
+        os.environ['HOST'] = '127.0.0.1'
+        os.environ['HOST_PORT'] = '5000'
+        os.environ['FLASK_ENV'] = 'development'
+        os.environ['FLASK_CONFIG_DEFAULT'] = 'Test'
+            
+        # command to start process
+        # args = ['make', 'run-io']
+        args = [
+                rootdir+'/venv/bin/gunicorn',
+                '--chdir', rootdir,
+                '--worker-class', 'eventlet', 
+                '-w', '1', 
+                '-b', '127.0.0.1:5000', 
+                '-t', '600', 
+                'wsgi:app']
+
+        # passing extra keyword values to
+        # sucprocess.Popen constructor
+        popen_kwargs = {
+            "shell": True,
+            "user": "ben",
+            "universal_newlines": True,
+        }
+
+        # max startup waiting time
+        # optional, defaults to 120 seconds
+        timeout = 45
+
+        # max lines read from stdout when matching pattern
+        # optional, defaults to 50 lines
+        max_read_lines = 100
+
+        # When set to True, xprocess will attempt to terminate and
+        # clean-up the resources of started processes upon interruption
+        # during the test run (e.g. SIGINT, CTRL+C or internal errors).
+        # Defaults to False
+        terminate_on_interrupt = True
+
+        # def startup_check(self):
+        #     """
+        #     Optional callback used to check process responsiveness
+        #     after the provided pattern has been matched. Returned
+        #     value must be a boolean, where:
+
+        #     True: Process has been sucessfuly started and is ready
+        #           to answer queries.
+
+        #     False: Callback failed during process startup.
+
+        #     This method will be called multiple times to check if the
+        #     process is ready to answer queries. A 'TimeoutError' exception
+        #     will be raised if the provied 'startup_check' does not
+        #     return 'True' before 'timeout' seconds.
+        #     """
+        #     sock = socket.socket()
+        #     sock.connect(("localhost", 6777))
+        #     sock.sendall(b"testing connection\n")
+        #     return sock.recv(1) == "connection ok!"
+
+    # ensure process is running and return its logfile
+    logfile = xprocess.ensure("myserver", Starter)
+
+    # conn = # create a connection or url/port info to the server
+    sock = socket.socket()
+    sock.connect(("127.0.0.1", 5000))
+    yield sock
+
+    # clean up whole process tree afterwards
+    xprocess.getinfo("myserver").terminate()

@@ -1,13 +1,14 @@
 import os
 import subprocess
 from io import BytesIO
+from extensions import io
 import json
 from vosk import Model, KaldiRecognizer
 
-APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 class Parser:
     def __init__(self, allowed_languages):
+        APP_ROOT = os.path.dirname(os.path.realpath(__file__))
         self.languages = []
         # language models
         # English
@@ -21,39 +22,33 @@ class Parser:
             self.rec_fa = KaldiRecognizer(model_fa, 16000)
             self.languages.append('fa')
 
-    # parse microphone audio from input stream (only full recording support for now)
-    def parse_audio(self, stream):
-        stream.seek(0)
-        audio = stream.getvalue()
-        data_bytes = convert_audio(audio)
-        # feed input to recognizer in increments
-        while True:
-            data = data_bytes.read(4000)
-            if len(data) == 0:
-                break
-            self.rec.AcceptWaveform(data)
-        res = json.loads(self.rec.FinalResult())
-        stream.flush()
-        return res['text']
-
     # parse audio file from upload
     def parse_file(self, file_in, language):
         rec = self.get_recognizer(language)
         file_data = file_in.read()
         data_bytes = self.convert_audio(file_data)
+        input_size = data_bytes.getbuffer().nbytes
+        read_size = 0
+        last_percentage = 0
         text_chunks = []
         # feed input to recognizer in increments
         while True:
             data = data_bytes.read(4000)
+            read_size += 4000
             if len(data) == 0:
                 break
             
             if rec.AcceptWaveform(data):
                 res = json.loads(rec.Result())['text']
-                print(res)
                 text_chunks.append(res)
-            else:
-                print(f'Partial: {rec.PartialResult()}')
+            
+            # progressively return percentage
+            completion = 100 * read_size / input_size
+            if completion - last_percentage > 5:
+                last_percentage = completion
+                print(completion)
+                data = {'percentage' : completion}
+                io.emit('progress', data)
             
         res = json.loads(rec.FinalResult())['text']
         text_chunks.append(res)
@@ -61,9 +56,13 @@ class Parser:
 
     # convert audio input to .wav format bytes
     def convert_audio(self, input):
-        process = subprocess.Popen(['ffmpeg', '-loglevel', 'quiet',
+        process = subprocess.Popen(['ffmpeg', 
+                                    '-loglevel', 'quiet',
                                     '-i', '-',
-                                    '-ar', "16000", '-ac', '1', '-f', 's16le', '-'],
+                                    '-ar', "16000", 
+                                    '-ac', '1', 
+                                    '-f', 's16le', 
+                                    '-'],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
         p_out, err = process.communicate(input=input, timeout=None)

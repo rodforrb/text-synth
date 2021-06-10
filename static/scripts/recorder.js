@@ -2,7 +2,7 @@
  $(document).ready(function() {
          
   // sending a connect request to the server.
-  var socket = io.connect('127.0.0.1:5000');
+  var socket = io.connect();
  
   // handler for receiving text from server
   socket.on('Text received', function(data) {
