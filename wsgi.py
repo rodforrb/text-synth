@@ -27,3 +27,4 @@ if __name__ == '__main__':
 
     io.run(app, **kwargs)
     
+print('Server ready')

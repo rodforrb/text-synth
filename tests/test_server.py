@@ -1,6 +1,15 @@
 import pytest
-from .conftest import myserver
+from .conftest import testserver
+from http import client
 
+def test_url_upload_get(testserver):
+    testserver.request('GET', '/upload')
+    response = testserver.getresponse()
+    
+    assert response.status == 200
 
-def test_connection(myserver):
-    myserver.send(b"GET / HTTP/1.1\r\n\r\n")
+def test_url_upload_post(testserver):
+    testserver.request('POST', '/upload')
+    response = testserver.getresponse()
+    
+    assert response.status == 302

@@ -62,10 +62,10 @@ class Config(object):
     # loaded for each app
     LOAD_MODULES_EXTENSIONS = [
         'views',
-        'models',
-        'admin',
-        'api',
-        'schemas'
+        # 'models',
+        # 'admin',
+        # 'api',
+        # 'schemas'
     ]
 
     # # add below the module path of extensions
@@ -77,9 +77,6 @@ class Config(object):
         'extensions.io'
     ]
 
-    # see example/ for reference
-    # ex: BLUEPRINTS = ['blog']  # where `blog` is a Blueprint instance
-    # ex: BLUEPRINTS = [('blog', {'url_prefix': '/myblog'})]  # where `blog` is a Blueprint instance
     BLUEPRINTS: List = [('text-synth', {'url_prefix': ''})]
 
 

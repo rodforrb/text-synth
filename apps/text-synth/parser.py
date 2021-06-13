@@ -3,11 +3,12 @@ import subprocess
 from io import BytesIO
 from extensions import io
 import json
-from vosk import Model, KaldiRecognizer
+from vosk import Model, KaldiRecognizer, SetLogLevel
 
 
 class Parser:
     def __init__(self, allowed_languages):
+        SetLogLevel(-1)
         APP_ROOT = os.path.dirname(os.path.realpath(__file__))
         self.languages = []
         # language models

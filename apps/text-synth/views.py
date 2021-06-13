@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 
 from .parser import Parser
 from .sockets import *
+
 app = Blueprint('text-synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3'}
 
@@ -68,6 +69,3 @@ def upload():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-        
-
-print("Server ready")

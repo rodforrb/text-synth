@@ -43,7 +43,6 @@ def app_factory(config, app_name, blueprints=None):
         template_folder=os.path.join(PROJECT_PATH, 'templates'),
         static_folder=os.path.join(PROJECT_PATH, 'static')
     )
-    print('static folder: ' + os.path.join(PROJECT_PATH, 'static'))
     config = config_str_to_obj(config)
 
     app.cli.add_command(new_app)
