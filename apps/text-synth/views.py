@@ -40,7 +40,7 @@ def upload():
         if 'file' not in request.files:
             flash('No file part')
             return redirect(request.url)
-        
+
         language = request.values['language']
         # grab list of files
         files = request.files.getlist('file')

@@ -27,7 +27,7 @@ def testserver(xprocess, request):
                 'wsgi:app']
 
         # passing extra keyword values to
-        # sucprocess.Popen constructor
+        # subprocess.Popen constructor
         popen_kwargs = {
             "shell": True,
             "user": "ben",

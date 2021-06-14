@@ -32,6 +32,7 @@ class Parser:
         read_size = 0
         last_percentage = 0
         text_chunks = []
+
         # feed input to recognizer in increments
         while True:
             data = data_bytes.read(4000)
