@@ -1,7 +1,7 @@
 import os
 import subprocess
 from io import BytesIO
-from extensions import io
+#from extensions import io
 import json
 from vosk import Model, KaldiRecognizer, SetLogLevel
 
@@ -44,13 +44,13 @@ class Parser:
                 res = json.loads(rec.Result())['text']
                 text_chunks.append(res)
             
-            # progressively return percentage
-            completion = 100 * read_size / input_size
-            if completion - last_percentage > 5:
-                last_percentage = completion
-                print(completion)
-                data = {'percentage' : completion}
-                io.emit('progress', data)
+#            # progressively return percentage
+#            completion = 100 * read_size / input_size
+#            if completion - last_percentage > 5:
+#                last_percentage = completion
+#                print(completion)
+#                data = {'percentage' : completion}
+#                io.emit('progress', data)
             
         res = json.loads(rec.FinalResult())['text']
         text_chunks.append(res)

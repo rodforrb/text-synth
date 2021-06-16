@@ -1,6 +1,5 @@
 import pytest
 from .conftest import testserver
-from http import client
 
 def test_url_upload_get(testserver):
     testserver.request('GET', '/upload')
