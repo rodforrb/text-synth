@@ -1,3 +1,7 @@
+'''
+Tests for responses to uploading files to the server.
+This represents user-facing functionality.
+'''
 import pytest
 from .testdata import fa_text
 from .conftest import testserver

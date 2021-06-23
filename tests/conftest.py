@@ -1,3 +1,7 @@
+'''
+Pytest fixture used to run the server as a background process.
+The testserver fixture is started for every test which needs it.
+'''
 import pytest
 import os
 from xprocess import ProcessStarter
