@@ -5,23 +5,27 @@ from io import BytesIO
 import json
 from vosk import Model, KaldiRecognizer, SetLogLevel
 
+MODELS_PATH = os.path.dirname(os.path.realpath(__file__)) + '/models/'
 
 class Parser:
     def __init__(self, allowed_languages):
+        # silence KaldiRecognizer
         SetLogLevel(-1)
-        APP_ROOT = os.path.dirname(os.path.realpath(__file__))
+
+        self.allowed_languages = allowed_languages
         self.languages = []
-        # language models
+        # import language models
         # English
         if 'en' in allowed_languages:
-            model_en = Model(APP_ROOT + "/models/model-en")
+            model_en = Model(MODELS_PATH + "model-en")
             self.rec_en = KaldiRecognizer(model_en, 16000)
             self.languages.append('en')
         # Persian
         if 'fa' in allowed_languages:
-            model_fa = Model(APP_ROOT + "/models/model-fa")
+            model_fa = Model(MODELS_PATH + "model-fa")
             self.rec_fa = KaldiRecognizer(model_fa, 16000)
             self.languages.append('fa')
+
 
     # parse audio file from upload
     def parse_file(self, file_in, language):
@@ -70,7 +74,19 @@ class Parser:
         p_out, err = process.communicate(input=input, timeout=None)
         return BytesIO(p_out)
     
+    def new_model(self, language):
+        '''Take 2 letter language code and return a new recognizer model'''
+        if type(language) != str:
+            raise TypeError(f'Model path expected a string, instead got type {type(language)}')
+        if len(language) != 2:
+            raise ValueError(f'Cannot create model from invalid language code: {language}')
+        path = MODELS_PATH + "model-" + language
+        model = Model(path)
+        rec = KaldiRecognizer(model, 16000)
+        return rec
+
     def get_recognizer(self, language):
+        '''Take 2 letter language code and return its corresponding model'''
         if language not in self.languages:
             raise ValueError('Language not supported or activated')
         rec = None
