@@ -4121,6 +4121,9 @@ textarea.form-control-lg {
   .navbar-expand-lg .navbar-toggler {
     display: none;
   }
+  .sidebar-toggle {
+    visibility: hidden;
+  }
 }
 @media (min-width: 1200px) {
   .navbar-expand-xl {
