@@ -1,17 +1,13 @@
-run-io:
-	PYTHONUNBUFFERED=1 HOST=127.0.0.1 HOST_PORT=5000 FLASK_ENV=development FLASK_CONFIG_DEFAULT=Dev venv/bin/gunicorn --worker-class eventlet -w 1 -b 127.0.0.1:5000 -t 600 wsgi:app
-
-# runs app in development mode; for usage without docker
 run-dev:
-	HOST=127.0.0.1 HOST_PORT=5000 FLASK_ENV=development FLASK_CONFIG_DEFAULT=Dev flask run
+	PYTHONUNBUFFERED=1 HOST=127.0.0.1 HOST_PORT=5000 FLASK_ENV=development FLASK_CONFIG_DEFAULT=Dev \
+	venv/bin/gunicorn wsgi:app --worker-class eventlet -w 1 -b 127.0.0.1:5000 -t 600 --reload \
+	--reload-extra-file templates/base.html \
+	--reload-extra-file templates/upload.html \
+	--reload-extra-file templates/result.html 
 
 # runs all tests
-run-tests:
+test:
 	HOST=dv.local HOST_PORT=5000 FLASK_ENV=development FLASK_CONFIG_DEFAULT=Test pytest
-
-# creates a new app under apps
-new-app:
-	FLASK_ENV=development FLASK_CONFIG_DEFAULT=Dev flask new-app
 
 # flask-migrate commands shortcuts
 db-init:

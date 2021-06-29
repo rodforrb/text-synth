@@ -22,3 +22,18 @@ Filestore:
 Other:
     - progress page
     - site styling
+    - fix save button
+
+
+
+
+Pages:
+    index
+
+    login
+
+    dashboard
+        upload button
+        submitted table
+            name, date, status, download/save
+    

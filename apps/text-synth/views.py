@@ -12,7 +12,7 @@ from .parser import Parser
 from .sockets import *
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
-ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3'}
+ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a'}
 
 LANGUAGES = [
     # 'en',
