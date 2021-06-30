@@ -20,20 +20,19 @@ Filestore:
     - create DB entry for files
 
 Other:
-    - progress page
-    - site styling
+    - progress bar
     - fix save button
 
 
 
 
 Pages:
-    index
+    main
 
     login
 
     dashboard
         upload button
         submitted table
-            name, date, status, download/save
-    
+            name, date, language, status, download/save
+        
