@@ -3,7 +3,8 @@ run-dev:
 	venv/bin/gunicorn wsgi:app --worker-class eventlet -w 1 -b 127.0.0.1:5000 -t 600 --reload \
 	--reload-extra-file templates/base.html \
 	--reload-extra-file templates/upload.html \
-	--reload-extra-file templates/result.html 
+	--reload-extra-file templates/result.html \
+	--reload-extra-file templates/dashboard.html 
 
 # runs all tests
 test:

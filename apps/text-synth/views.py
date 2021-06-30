@@ -23,7 +23,9 @@ parser = Parser(LANGUAGES)
 
 @app.route('/')
 def index():
-    return redirect('/upload')
+    #TODO: check if logged in
+    # return redirect('/upload')
+    return dashboard()
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -69,3 +71,8 @@ def upload():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def dashboard():
+    '''Render the dashboard for a logged in user'''
+
+    return render_template('dashboard.html')

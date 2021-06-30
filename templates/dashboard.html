@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#uploadBox" aria-expanded="false" aria-controls="uploadBox">
+        Upload New File(s)
+    </button>
+</div>
+<div class="collapse" id="uploadBox">
+    <div class="card card-body">
+        <form enctype="multipart/form-data" method="POST" action="">
+            <div id="select">
+                <label for="language" class="form-label">Language</label>
+                <select id="language" class="form-select mb-3" name="language">
+                    <option value="fa" selected="selected">Persian</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="fileUpload" class="form-label">Choose Files</label>
+                <input class="form-control" id="fileUpload" type="file" name="file" accept="audio/*" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+<br>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Uploaded Files
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>File</th>
+                    <th>Language</th>
+                    <th>Status</th>
+                    <th>Save</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2021-05-29</td>
+                    <td>sample_file_name</td>
+                    <td>English</td>
+                    <td>Complete</td>
+                    <td>buttons</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

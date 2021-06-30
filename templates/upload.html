@@ -1,4 +1,4 @@
-{% extends "base.html" %}}
+{% extends "base.html" %}
 
   {% block h2 %}
   <h2>File Upload</h2>
@@ -14,6 +14,9 @@
           {% endif %}
           {% if 'fa' in languages %}
             <option value="fa" selected="selected">Persian</option>
+          {% endif %}
+          {% if 'ar' in languages %}
+            <option value="ar">Arabic</option>
           {% endif %}
         </select>
       </div>
