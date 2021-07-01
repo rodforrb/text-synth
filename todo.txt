@@ -1,16 +1,3 @@
-Database:
-    - users db
-        - id
-        - name
-        - pwhash
-        - email
-        - list(files)
-    - files index db
-        - id
-        - filename
-        - date added
-        - 
-
 Users:
     - user login page
     - add user auth
