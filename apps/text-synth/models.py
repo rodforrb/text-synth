@@ -6,9 +6,14 @@ import enum
 import datetime
 
 class Status(enum.Enum):
-    submitted = 0
-    active = 1
-    complete = 2
+    Submitted = 0
+    Active = 1
+    Complete = 2
+
+class Language(enum.Enum):
+    English = 0
+    Farsi = 1
+    Arabic = 2
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -32,7 +37,8 @@ class File(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     name = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    status = db.Column(db.Enum(Status), default=Status.submitted)
+    status = db.Column(db.Enum(Status), default=Status.Submitted)
+    language = db.Column(db.Enum(Language), nullable=False)
     text = db.Column(db.Text)
 
 def create_test_db():
@@ -42,14 +48,22 @@ def create_test_db():
         u.password = "test"
         db.session.add(u)
 
-        f1 = File(user_id=1, name='filename1')
-        f2 = File(user_id=1, name='filename2')
-        db.session.add(f1)
-        db.session.add(f2)
 
         db.session.commit()
-    except:
+    except Exception as e:
+        print(e)
         print('test db already exists')
+        db.session.rollback()
+
+    try:
+        f1 = File(user_id=1, name='filename1', language=Language.English)
+        f2 = File(user_id=1, name='filename2', language=Language.English)
+        db.session.add(f1)
+        db.session.add(f2)
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        print('files already exist')
         db.session.rollback()
 
 def authenticate_user(useremail, password):

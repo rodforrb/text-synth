@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template, flash, redirect, request
 from flask_session import Session
-from flask_login import current_user, login_required, login_user
+from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import secure_filename
 from extensions import db, login_manager
 import time
@@ -24,16 +24,15 @@ parser = Parser(LANGUAGES)
 @app.route('/')
 def index():
     #TODO: check if logged in
-    # # return redirect('/upload')
-    create_test_db()
+    # db.drop_all()
+    # db.metadata.clear()
+    # create_test_db()
     user = authenticate_user('ben@example.com', 'test')
-    print(f'user: {user}')
-    files = get_user_files(user.id)
-    for f in files:
-        print(f'file {f.file_id}: {f.name}')
     login_user(user)
-    
-    return dashboard()
+    if current_user.is_authenticated:
+        return dashboard()
+    else:
+        return redirect('/login')
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -83,7 +82,18 @@ def allowed_file(filename):
 def dashboard():
     '''Render the dashboard for a logged in user'''
     print(f'logged in as: {current_user}')
-    return render_template('dashboard.html')
+    files = get_user_files(current_user.id)
+    file_list = []
+    for f in files:
+        print(f'file {f.file_id}: {str(f)}')
+        file_list.append({'date': f.date,
+                          'name': f.name,
+                          'status': f.status.name,
+                          'language': f.language.name,
+                          'text': f.text
+        })
+
+    return render_template('dashboard.html', username=current_user.name, entries=file_list)
 
 @app.route('/login')
 def login_page():

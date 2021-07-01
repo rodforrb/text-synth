@@ -47,6 +47,15 @@
                     <td>Complete</td>
                     <td>buttons</td>
                 </tr>
+                {% for file in entries %}
+                <tr>
+                    <td>{{file.date}}</td>
+                    <td>{{file.name}}</td>
+                    <td>{{file.language}}</td>
+                    <td>{{file.status}}</td>
+                    <td>buttons</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
