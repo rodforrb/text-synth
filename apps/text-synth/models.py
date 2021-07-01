@@ -1,6 +1,6 @@
-from extensions import db
+from extensions import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import UserMixin
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import enum
 import datetime
@@ -10,7 +10,7 @@ class Status(enum.Enum):
     active = 1
     complete = 2
 
-class User(db.Model, UserMixin):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(40), nullable=False, unique=True)
@@ -63,3 +63,7 @@ def authenticate_user(useremail, password):
 def get_user_files(user_id):
     files = File.query.filter_by(user_id=user_id).all()
     return files
+    
+@login_manager.user_loader
+def load_user(userid):
+    return User.query.filter_by(id=userid).first()

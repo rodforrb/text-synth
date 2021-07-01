@@ -12,6 +12,7 @@ from flask_marshmallow import Marshmallow
 from flask_jsglue import JSGlue
 from flask_socketio import SocketIO
 from flask_rq2 import RQ
+from flask_login import LoginManager
 
 toolbar = None
 
@@ -27,6 +28,7 @@ glue = JSGlue()
 io = SocketIO()
 rq = RQ()
 security = Security()
+login_manager = LoginManager()
 
 
 def security_init_kwargs():

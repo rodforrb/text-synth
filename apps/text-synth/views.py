@@ -1,8 +1,9 @@
 from flask import Blueprint
 from flask import render_template, flash, redirect, request
 from flask_session import Session
+from flask_login import current_user, login_required, login_user
 from werkzeug.utils import secure_filename
-from extensions import db
+from extensions import db, login_manager
 import time
 
 from .parser import Parser
@@ -15,6 +16,7 @@ ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a'}
 LANGUAGES = [
     # 'en',
     'fa'
+    #,'ar'
 ]
 
 parser = Parser(LANGUAGES)
@@ -23,14 +25,14 @@ parser = Parser(LANGUAGES)
 def index():
     #TODO: check if logged in
     # # return redirect('/upload')
-    # db.drop_all()
-    # db.metadata.clear()
     create_test_db()
     user = authenticate_user('ben@example.com', 'test')
     print(f'user: {user}')
     files = get_user_files(user.id)
     for f in files:
         print(f'file {f.file_id}: {f.name}')
+    login_user(user)
+    
     return dashboard()
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -80,5 +82,17 @@ def allowed_file(filename):
 
 def dashboard():
     '''Render the dashboard for a logged in user'''
-
+    print(f'logged in as: {current_user}')
     return render_template('dashboard.html')
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
+
+@app.route('/register')
+def register_page():
+    return render_template('register.html')
+
+@app.route('/recover')
+def recover_page():
+    return render_template('password.html')
