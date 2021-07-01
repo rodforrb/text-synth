@@ -86,7 +86,7 @@ def dashboard():
     file_list = []
     for f in files:
         print(f'file {f.file_id}: {str(f)}')
-        file_list.append({'date': f.date,
+        file_list.append({'date': f.date.date(),
                           'name': f.name,
                           'status': f.status.name,
                           'language': f.language.name,
