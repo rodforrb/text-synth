@@ -1,15 +1,13 @@
 from flask import Blueprint
-from flask import render_template, flash, redirect, url_for, request
-from flask_socketio import SocketIO, emit
+from flask import render_template, flash, redirect, request
 from flask_session import Session
-import time
-import json
-import os
-from io import BytesIO
 from werkzeug.utils import secure_filename
+from extensions import db
+import time
 
 from .parser import Parser
 from .sockets import *
+from .models import *
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a'}
@@ -24,7 +22,15 @@ parser = Parser(LANGUAGES)
 @app.route('/')
 def index():
     #TODO: check if logged in
-    # return redirect('/upload')
+    # # return redirect('/upload')
+    # db.drop_all()
+    # db.metadata.clear()
+    create_test_db()
+    user = authenticate_user('ben@example.com', 'test')
+    print(f'user: {user}')
+    files = get_user_files(user.id)
+    for f in files:
+        print(f'file {f.file_id}: {f.name}')
     return dashboard()
 
 @app.route('/upload', methods=['GET', 'POST'])

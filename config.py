@@ -85,10 +85,10 @@ class Config(object):
     # loaded for each app
     LOAD_MODULES_EXTENSIONS = [
         'views',
-        # 'models',
+        'models',
         # 'admin',
         # 'api',
-        # 'schemas'
+        'schemas'
     ]
 
     # # add below the module path of extensions
