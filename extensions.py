@@ -5,6 +5,8 @@
 
 import os
 
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_security import Security
 from flask_marshmallow import Marshmallow
 from flask_jsglue import JSGlue
@@ -18,6 +20,8 @@ if os.environ['FLASK_ENV'] == 'development':
     from flask_debugtoolbar import DebugToolbarExtension
     toolbar = DebugToolbarExtension()
 
+db = SQLAlchemy()
+migrate = Migrate(db=db)
 ma = Marshmallow()
 glue = JSGlue()
 io = SocketIO()

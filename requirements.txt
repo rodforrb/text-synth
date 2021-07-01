@@ -5,8 +5,11 @@ flask
 flask-testing
 flask-security-too
 flask-rq2
+flask-sqlalchemy
+flask-migrate
 marshmallow
 flask-marshmallow
+marshmallow-sqlalchemy
 flask-jsglue
 flask-socketio==4.3.2
 flask-debugtoolbar

@@ -6,6 +6,7 @@ from typing import Dict
 from typing import List
 
 project_name = "text-synth"
+SQLALCHEMY_DATABASE_URI_TMPL = "sqlite:////tmp/%(name)s.sqlite"
 
 
 # base config class; extend it to your needs.
@@ -29,6 +30,28 @@ class Config(object):
     SERVER_NAME_EXTRA = len(HOST_PORT) and '' or (":" + HOST_PORT)
     # SERVER_NAME contains the hostname and port (if non-default)
     SERVER_NAME = HOST + SERVER_NAME_EXTRA
+
+
+    DB_USER = os.getenv('DB_USER', '')
+    DB_PASS = os.getenv('DB_PASS', '')
+    DB_HOST = os.getenv('DB_HOST', '')  # plus port, if non-default
+    DB_NAME = os.getenv('DB_NAME', '')
+
+    # default database connection
+    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI_TMPL % {
+        'user': DB_USER,
+        'passwd': DB_PASS,
+        'host': DB_HOST,
+        'name': DB_NAME
+    }
+
+    # set this up case you need multiple database connections
+    SQLALCHEMY_BINDS: Dict = {}
+
+    # log all the statements issued to stderr?
+    SQLALCHEMY_ECHO = DEBUG
+    # track and emit signals on object modification?
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # use to set werkzeug / socketio options, if needed
     # SERVER_OPTIONS = {}
@@ -71,6 +94,8 @@ class Config(object):
     # # add below the module path of extensions
     # # you wish to load
     EXTENSIONS = [
+        'extensions.db',
+        'extensions.migrate',
     #     'extensions.security',
     #     'extensions.ma',
     #     'extensions.glue',
@@ -86,6 +111,9 @@ class Dev(Config):
     # EXTENSIONS = Config.EXTENSIONS + [
     #     'extensions.toolbar'
     # ]
+        # uses sqlite by default
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/%s.db' % Config.DB_NAME
+
 
 
 # config class used during tests
