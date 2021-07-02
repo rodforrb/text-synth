@@ -16,6 +16,7 @@ class FileHandler:
         self.processor = FileProcessor()
 
     def set_app_context(self, context):
+        '''The app context needs to be supplied at runtime before use, because this module exists outside of the context'''
         self.appcontext = context
         self.processor.appcontext = context
 
