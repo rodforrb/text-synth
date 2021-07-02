@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, request
 from flask_session import Session
 from flask_login import current_user, login_required, login_user, logout_user
 from extensions import db, login_manager
-import time
+from datetime import datetime
 
 from .parser import Parser
 from .sockets import *
@@ -33,6 +33,7 @@ def index():
         if request.method == 'POST':
             # Submit new file(s)
             upload()
+            return redirect('/')
         return dashboard()
     else:
         return redirect('/login')
@@ -82,7 +83,7 @@ def dashboard():
     files = get_user_files(current_user.id)
     file_list = []
     for f in files:
-        file_list.append({'date': f.date.date(),
+        file_list.append({'date': f.date.strftime('%Y-%m-%d %H:%M'),
                           'name': f.name,
                           'status': f.status.name,
                           'language': f.language.name,
