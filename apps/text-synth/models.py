@@ -5,6 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import enum
 import datetime
 
+UPLOAD_FOLDER = 'upload/'
+
 class Status(enum.Enum):
     Submitted = 0
     Active = 1
@@ -14,6 +16,12 @@ class Language(enum.Enum):
     English = 0
     Farsi = 1
     Arabic = 2
+
+lang_to_enum = {'en': Language.English,
+                'fa': Language.Farsi,
+                'ar': Language.Arabic
+}
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,7 +59,6 @@ def create_test_db():
 
         db.session.commit()
     except Exception as e:
-        print(e)
         print('test db already exists')
         db.session.rollback()
 
@@ -62,7 +69,6 @@ def create_test_db():
         db.session.add(f2)
         db.session.commit()
     except Exception as e:
-        print(e)
         print('files already exist')
         db.session.rollback()
 
@@ -81,3 +87,56 @@ def get_user_files(user_id):
 @login_manager.user_loader
 def load_user(userid):
     return User.query.filter_by(id=userid).first()
+
+
+def save_file(user_id, file, lang_code):
+    '''
+    Save a given file to disk with given user id and language
+    Return the file_id of the stored file
+    '''
+    language = lang_to_enum[lang_code]
+
+    try:
+        # save file info to database
+        fileinfo = File(user_id=user_id, name=file.filename, language=language)
+        db.session.add(fileinfo)
+        db.session.commit()
+        file_id = fileinfo.file_id
+
+        # save file contents to disk
+        file.save(UPLOAD_FOLDER + str(file_id))
+        # with open(UPLOAD_FOLDER + str(file_id), 'wb') as fileout:
+        #     fileout.write(file)
+        return file_id
+
+    except Exception:
+        db.session.rollback()
+        raise
+
+def load_file(file_id):
+    '''
+    Load a file from disk given its file id
+    Return the File object and language
+    '''
+
+    filecontents = ''
+    language = None
+    
+    with open(UPLOAD_FOLDER + str(file_id), 'rb') as filein:
+        filecontents = filein.read()
+
+    file = File.query.filter_by(file_id=file_id).first()
+    language = file.language
+
+    return filecontents, language
+
+def update_text(file_id, text):
+    '''Update the text field for a given file id'''
+    try:
+        file = File.query.filter_by(file_id=file_id).first()
+        file.text = text
+        file.status = Status.Complete
+        db.session.commit()
+    except:
+        db.session.rollback()
+        raise

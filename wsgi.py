@@ -30,4 +30,5 @@ if __name__ == '__main__':
 
     io.run(app, **kwargs)
     
+# Trigger for xprocess testing server
 print('Server ready')

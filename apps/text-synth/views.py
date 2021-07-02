@@ -1,17 +1,19 @@
-from flask import Blueprint
+from flask import Blueprint, current_app
 from flask import render_template, flash, redirect, request
 from flask_session import Session
 from flask_login import current_user, login_required, login_user, logout_user
-from werkzeug.utils import secure_filename
 from extensions import db, login_manager
 import time
 
 from .parser import Parser
 from .sockets import *
 from .models import *
+from .filehandler import FileHandler
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a'}
+
+filehandler = FileHandler()
 
 LANGUAGES = [
     # 'en',
@@ -19,9 +21,7 @@ LANGUAGES = [
     #,'ar'
 ]
 
-parser = Parser(LANGUAGES)
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     #TODO: check if logged in
     # db.drop_all()
@@ -30,11 +30,13 @@ def index():
     user = authenticate_user('ben@example.com', 'test')
     login_user(user)
     if current_user.is_authenticated:
+        if request.method == 'POST':
+            # Submit new file(s)
+            upload()
         return dashboard()
     else:
         return redirect('/login')
 
-@app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         # verify a language is submitted
@@ -60,19 +62,11 @@ def upload():
             if file.filename == '':
                 flash('No selected file')
                 return redirect(request.url)
-            # if file is valid, parse file
+            # if file is valid, send file for parsing
             if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                # synthesize text from audio file
-                start_time = time.time()
-                filecontents = parser.parse_file(file, language)
-                elapsed_time = time.time() - start_time
-                print(f'File transcribed in {elapsed_time} seconds')
-                # store text to send to result page
-                entries.append({"filename" : filename, "filecontents" : filecontents})
-
-        return render_template('result.html', entries=entries)
-    return render_template('upload.html', languages=LANGUAGES)
+                if filehandler.appcontext == None:
+                    filehandler.set_app_context(current_app.app_context())
+                filehandler.put(file, language)
 
 # check if file has valid extension
 def allowed_file(filename):
@@ -81,11 +75,13 @@ def allowed_file(filename):
 
 def dashboard():
     '''Render the dashboard for a logged in user'''
-    print(f'logged in as: {current_user}')
+    if not current_user.is_authenticated:
+        # in case method is somehow called when not logged in
+        return redirect('/login')
+
     files = get_user_files(current_user.id)
     file_list = []
     for f in files:
-        print(f'file {f.file_id}: {str(f)}')
         file_list.append({'date': f.date.date(),
                           'name': f.name,
                           'status': f.status.name,

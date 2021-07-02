@@ -1,9 +1,9 @@
 import os
 import subprocess
 from io import BytesIO
-#from extensions import io
 import json
 from vosk import Model, KaldiRecognizer, SetLogLevel
+from .models import Language
 
 MODELS_PATH = os.path.dirname(os.path.realpath(__file__)) + '/models/'
 
@@ -19,18 +19,22 @@ class Parser:
         if 'en' in allowed_languages:
             model_en = Model(MODELS_PATH + "model-en")
             self.rec_en = KaldiRecognizer(model_en, 16000)
-            self.languages.append('en')
+            self.languages.append(Language.English)
         # Persian
         if 'fa' in allowed_languages:
             model_fa = Model(MODELS_PATH + "model-fa")
             self.rec_fa = KaldiRecognizer(model_fa, 16000)
-            self.languages.append('fa')
+            self.languages.append(Language.Farsi)
+        # Arabic
+        if 'ar' in allowed_languages:
+            model_ar = Model(MODELS_PATH + "model-ar")
+            self.rec_ar = KaldiRecognizer(model_ar, 16000)
+            self.languages.append(Language.Arabic)
 
 
     # parse audio file from upload
-    def parse_file(self, file_in, language):
+    def parse_file(self, file_data, language):
         rec = self.get_recognizer(language)
-        file_data = file_in.read()
         data_bytes = self.convert_audio(file_data)
         input_size = data_bytes.getbuffer().nbytes
         read_size = 0
@@ -90,8 +94,10 @@ class Parser:
         if language not in self.languages:
             raise ValueError('Language not supported or activated')
         rec = None
-        if language == 'en':
+        if language == Language.English:
             rec = self.rec_en
-        elif language == 'fa':
+        elif language == Language.Farsi:
             rec = self.rec_fa
+        elif language == Language.Arabic:
+            rec = self.rec_ar
         return rec

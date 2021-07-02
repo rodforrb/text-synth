@@ -4,3 +4,4 @@ __pycache__
 .vscode
 apps/text-synth/models/model*
 *.swp
+upload/*

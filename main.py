@@ -51,7 +51,7 @@ def app_factory(config, app_name, blueprints=None):
     app.configure(config)
     app.add_blueprint_list(blueprints or config.BLUEPRINTS)
     app.setup()
-
+    
     return app
 
 
