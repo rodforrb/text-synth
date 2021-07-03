@@ -1,20 +1,17 @@
 Users:
     - user login page
     - add user auth
-    
-Filestore:
-    - save file to disc with hashed name
-    - create DB entry for files
 
 Other:
-    - progress bar
-    - fix save button
+    - progress bar and live table
+    - control buttons
+        save, copy, delete
 
 
 
 
 Pages:
-    main
+    main/landing
 
     login
 
