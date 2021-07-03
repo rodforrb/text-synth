@@ -9,7 +9,7 @@ UPLOAD_FOLDER = 'upload/'
 
 class Status(enum.Enum):
     Submitted = 0
-    Active = 1
+    Parsing = 1
     Complete = 2
 
 class Language(enum.Enum):
@@ -127,6 +127,13 @@ def load_file(file_id):
 
     file = File.query.filter_by(file_id=file_id).first()
     language = file.language
+
+    try:
+        file.status = Status.Parsing
+        db.session.commit()
+    except:
+        db.session.rollback()
+        raise
 
     return filecontents, language
 

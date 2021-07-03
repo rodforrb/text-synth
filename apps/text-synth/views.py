@@ -83,7 +83,8 @@ def dashboard():
     files = get_user_files(current_user.id)
     file_list = []
     for f in files:
-        file_list.append({'date': f.date.strftime('%Y-%m-%d %H:%M'),
+        file_list.append({'id': f.file_id,
+                          'date': f.date.strftime('%Y-%m-%d %H:%M'),
                           'name': f.name,
                           'status': f.status.name,
                           'language': f.language.name,
