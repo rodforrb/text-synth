@@ -88,7 +88,6 @@ class Config(object):
         'models',
         # 'admin',
         # 'api',
-        'schemas'
     ]
 
     # # add below the module path of extensions

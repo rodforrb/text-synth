@@ -40,11 +40,19 @@ def index():
 
 def upload():
     if request.method == 'POST':
+        # if user deletes a file
+        if 'delete' in request.values.keys():
+            if not current_user.is_authenticated:
+                return redirect('/login')
+            file_id = request.values['delete']
+            delete_file(file_id)
+            return dashboard()
+
         # verify a language is submitted
         if 'language' not in request.values.keys():
             flash('No language selected')
             return redirect(request.url)
-        # verify a valid language is passed
+        # verify the language is valid
         if request.values['language'] not in LANGUAGES:
             flash('No language selected')
             return redirect(request.url)
@@ -56,8 +64,6 @@ def upload():
         language = request.values['language']
         # grab list of files
         files = request.files.getlist('file')
-        # list of {filename, text} objects for result page
-        entries = []
         for file in files:
             # if user does not select any file
             if file.filename == '':

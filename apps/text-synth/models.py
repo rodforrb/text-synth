@@ -147,3 +147,12 @@ def update_text(file_id, text):
     except:
         db.session.rollback()
         raise
+
+def delete_file(id):
+    '''Delete a file instance given file id'''
+    try:
+        File.query.filter_by(file_id=int(id)).delete()
+        db.session.commit()
+    except:
+        db.session.rollback()
+        raise
