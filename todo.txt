@@ -7,7 +7,7 @@ Other:
     - control buttons
         save (working)
         copy, delete
-
+    - file length
 
 
 

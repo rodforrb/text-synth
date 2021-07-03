@@ -59,6 +59,7 @@ class Parser:
                 print(f'Progress: {completion}%')
                 data = {'percentage' : completion}
 #               io.emit('progress', data)
+        print(f'Progress: 100%')
             
         res = json.loads(rec.FinalResult())['text']
         text_chunks.append(res)
