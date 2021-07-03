@@ -51,7 +51,7 @@
                         <button class="btn btn-outline-secondary p rounded-3" data-bs-toggle="modal" data-bs-target="#entry_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-excerpt" title="Preview" aria-hidden="true"></span>
                         </button>
-                        <button class="btn btn-outline-success p rounded-3">
+                        <button class="btn btn-outline-success p rounded-3" onclick="download('{{file.name}}', 'entry_{{file.id}}')" aria-expanded="false">
                             <span class="oi oi-data-transfer-download" title="Save" aria-hidden="true"></span>
                         </button>
                         <button class="btn btn-outline-primary p rounded-3">
@@ -69,7 +69,7 @@
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                {{file.text}}
+                                <div class="text">{{file.text}}</div>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -83,4 +83,7 @@
         </table>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/dashboard.js"></script>
 {% endblock %}

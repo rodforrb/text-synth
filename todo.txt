@@ -5,7 +5,8 @@ Users:
 Other:
     - progress bar and live table
     - control buttons
-        save, copy, delete
+        save (working)
+        copy, delete
 
 
 
