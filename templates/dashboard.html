@@ -50,12 +50,12 @@
                         <button class="btn btn-outline-secondary p rounded-3" data-bs-toggle="modal" data-bs-target="#entry_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-excerpt" title="Preview" aria-hidden="true"></span>
                         </button>
-                        <button class="btn btn-outline-success p rounded-3" onclick="download('{{file.name}}', 'entry_{{file.id}}')" aria-expanded="false">
+                        <button class="btn btn-outline-primary p rounded-3" onclick="download('{{file.name}}', 'entry_{{file.id}}')" aria-expanded="false">
                             <span class="oi oi-data-transfer-download" title="Save" aria-hidden="true"></span>
                         </button>
-                        <button class="btn btn-outline-primary p rounded-3">
+                        <!-- <button class="btn btn-outline-primary p rounded-3">
                             <span class="oi oi-clipboard" title="Copy" aria-hidden="true"></span>
-                        </button>
+                        </button> -->
                         <button class="btn btn-outline-danger p rounded-3" data-bs-toggle="modal" data-bs-target="#delete_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-x" title="Delete" aria-hidden="true"></span>
                         </button>

@@ -53,12 +53,12 @@ class Parser:
                 text_chunks.append(res)
             
 #            # progressively return percentage
-#            completion = 100 * read_size / input_size
-#            if completion - last_percentage > 5:
-#                last_percentage = completion
-#                print(completion)
-#                data = {'percentage' : completion}
-#                io.emit('progress', data)
+            completion = 100 * read_size / input_size
+            if completion - last_percentage > 5:
+                last_percentage = completion
+                print(f'Progress: {completion}%')
+                data = {'percentage' : completion}
+#               io.emit('progress', data)
             
         res = json.loads(rec.FinalResult())['text']
         text_chunks.append(res)
