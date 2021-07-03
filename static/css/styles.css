@@ -11249,3 +11249,14 @@ body {
   font-size: 0.75rem;
   border-radius: 0.25rem !important;
 }
+
+table { width: inherit !important; }
+
+td {
+  width: auto;
+}
+
+td.min {
+  width: 1%;
+  white-space: nowrap;
+}

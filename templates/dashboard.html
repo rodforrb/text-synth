@@ -36,24 +36,17 @@
                     <th>File</th>
                     <th>Language</th>
                     <th>Status</th>
-                    <th>Save</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>2021-05-29</td>
-                    <td>sample_file_name</td>
-                    <td>English</td>
-                    <td>Complete</td>
-                    <td>buttons</td>
-                </tr>
                 {% for file in entries %}
                 <tr>
-                    <td>{{file.date}}</td>
+                    <td class="min">{{file.date}}</td>
                     <td>{{file.name}}</td>
-                    <td>{{file.language}}</td>
-                    <td>{{file.status}}</td>
-                    <td class="d-flex justify-content-end">
+                    <td class="min">{{file.language}}</td>
+                    <td class="min">{{file.status}}</td>
+                    <td class="min">
                         <button class="btn btn-outline-secondary p rounded-3">
                             <span class="oi oi-excerpt" title="Preview" aria-hidden="true"></span>
                         </button>
