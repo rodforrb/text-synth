@@ -72,6 +72,17 @@ def create_test_db():
         print('files already exist')
         db.session.rollback()
 
+def create_user(name, email, password):
+    try:
+        u = User(name=name, email=email)
+        u.password = password
+        db.session.add(u)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        print('Failed to create new user')
+        raise
+
 def authenticate_user(useremail, password):
     u = User.query.filter_by(email=useremail).first()
     if u.check_password(password):

@@ -11,12 +11,12 @@ from .models import *
 from .filehandler import FileHandler
 
 app = Blueprint('text-synth', __name__, template_folder='templates')
-ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a'}
+ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a', 'amr'}
 
 filehandler = FileHandler()
 
 LANGUAGES = [
-    # 'en',
+    'en',
     'fa'
     #,'ar'
 ]
@@ -27,8 +27,6 @@ def index():
     # db.drop_all()
     # db.metadata.clear()
     # create_test_db()
-    user = authenticate_user('ben@example.com', 'test')
-    login_user(user)
     if current_user.is_authenticated:
         if request.method == 'POST':
             # Submit new file(s)
@@ -99,8 +97,16 @@ def dashboard():
 
     return render_template('dashboard.html', username=current_user.name, entries=file_list)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_page():
+    print('login page')
+    if request.method == 'POST':
+        print('login POST')
+        print(request.values.keys())
+        if 'inputEmail' in request.values.keys() and 'inputPassword' in request.values.keys():
+            email = request.values['inputEmail']
+            password = request.values['inputPassword']
+            return login_attempt(email, password)
     return render_template('login.html')
 
 @app.route('/register')
@@ -110,3 +116,18 @@ def register_page():
 @app.route('/recover')
 def recover_page():
     return render_template('password.html')
+
+def login_attempt(email, password):
+    print(f'login: {email}, {password}')
+    user = authenticate_user(email, password)
+    if user is not None:
+        login_user(user)
+        return redirect('/')
+    else:
+        # incorrect login
+        return redirect('/login')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')

@@ -7,7 +7,7 @@ from flask_login import current_user
 from .models import *
 from .parser import Parser
 
-parser = Parser(['fa'])
+parser = Parser(['en','fa'])
 
 class FileHandler:
     '''Handler to save and enqueue files'''

@@ -1,10 +1,11 @@
 run-dev:
 	PYTHONUNBUFFERED=1 HOST=127.0.0.1 HOST_PORT=5000 FLASK_ENV=development FLASK_CONFIG_DEFAULT=Dev \
-	venv/bin/gunicorn wsgi:app --worker-class eventlet -w 4 -b 127.0.0.1:5000 -t 600 --reload \
+	venv/bin/gunicorn wsgi:app --worker-class eventlet -w 2 -b 127.0.0.1:5000 -t 600 --reload \
 	--reload-extra-file templates/base.html \
 	--reload-extra-file templates/upload.html \
 	--reload-extra-file templates/result.html \
-	--reload-extra-file templates/dashboard.html 
+	--reload-extra-file templates/dashboard.html \
+	--reload-extra-file templates/login.html 
 
 # runs all tests
 test:

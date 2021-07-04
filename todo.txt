@@ -8,7 +8,7 @@ Other:
         save (working)
         copy, delete
     - file length
-
+    - correct timezones
 
 
 Pages:
