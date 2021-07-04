@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+<h1 class="mt-4">Dashboard</h1>
+<br>
 <div class="card">
     <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#uploadBox" aria-expanded="false" aria-controls="uploadBox">
         Upload New File(s)
@@ -46,7 +48,7 @@
                     <td class="min">{{file.date}}</td>
                     <td>{{file.name}}</td>
                     <td class="min">{{file.language}}</td>
-                    <td class="min">{{file.status}}</td>
+                    <td class="min" id="status_{{file.id}}">{{file.status}}</td>
                     <td class="min">
                         <button class="btn btn-outline-secondary p rounded-3" data-bs-toggle="modal" data-bs-target="#entry_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-excerpt" title="Preview" aria-hidden="true"></span>
@@ -106,5 +108,6 @@
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
 <script src="/static/js/dashboard.js"></script>
 {% endblock %}

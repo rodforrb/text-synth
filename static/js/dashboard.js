@@ -1,4 +1,17 @@
 $(document).ready(function() {
+    var socket = io.connect();
+
+    socket.on("progress", function(data) {
+        console.log(data);
+      });
+    
+      socket.on("complete", function(data) {
+        console.log(data);
+      });
+
+
+
+
     function getText(entry_id) {
         // get modal holding text
         var modal = document.getElementById(entry_id);
@@ -6,8 +19,7 @@ $(document).ready(function() {
         return text;
     }
 
-
-    download = function(filename, entry_id) {
+    const download = function(filename, entry_id) {
         // get text for file
         const text = getText(entry_id);
 
@@ -24,13 +36,4 @@ $(document).ready(function() {
         element.click();
         document.body.removeChild(element);
     };
-
-    copy = function(entry_id) {
-        var modal = document.getElementById(entry_id);
-        const textelement = modal.querySelector('.text')
-
-        textelement.focus();
-        textelement.select();
-        document.execCommand('copy');
-    }
 });
