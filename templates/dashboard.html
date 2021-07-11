@@ -7,9 +7,11 @@
         Upload New File(s)
     </button>
 </div>
+<!-- Expanding file upload box -->
 <div class="collapse" id="uploadBox">
     <div class="card card-body">
         <form enctype="multipart/form-data" method="POST" action="">
+            <!-- Language select -->
             <div id="select">
                 <label for="language" class="form-label">Language</label>
                 <select id="language" class="form-select mb-3" name="language">
@@ -17,6 +19,7 @@
                     <option value="en">English</option>
                 </select>
             </div>
+            <!-- File selector -->
             <div class="mb-3">
                 <label for="fileUpload" class="form-label">Choose Files</label>
                 <input class="form-control" id="fileUpload" type="file" name="file" accept="audio/*" multiple>
@@ -49,20 +52,22 @@
                     <td>{{file.name}}</td>
                     <td class="min">{{file.language}}</td>
                     <td class="min" id="status_{{file.id}}">{{file.status}}</td>
+                    <!-- Buttons -->
                     <td class="min">
+                        <!-- Preview (opens modal)-->
                         <button class="btn btn-outline-secondary p rounded-3" data-bs-toggle="modal" data-bs-target="#entry_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-excerpt" title="Preview" aria-hidden="true"></span>
                         </button>
+                        <!-- Download -->
                         <button class="btn btn-outline-primary p rounded-3" onclick="download('{{file.name}}', 'entry_{{file.id}}')" aria-expanded="false">
                             <span class="oi oi-data-transfer-download" title="Save" aria-hidden="true"></span>
                         </button>
-                        <!-- <button class="btn btn-outline-primary p rounded-3">
-                            <span class="oi oi-clipboard" title="Copy" aria-hidden="true"></span>
-                        </button> -->
+                        <!-- Delete (opens modal)-->
                         <button class="btn btn-outline-danger p rounded-3" data-bs-toggle="modal" data-bs-target="#delete_{{file.id}}" aria-expanded="false">
                             <span class="oi oi-x" title="Delete" aria-hidden="true"></span>
                         </button>
                     </td>
+                    <!-- Preview modal -->
                     <div class="modal fade modal-dialog-scrollable" id="entry_{{file.id}}" tabindex="-1" aria-labelledby="entry_{{file.id}}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -79,6 +84,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Confirm delete modal-->
                     <div class="modal fade" tabindex="-1" id="delete_{{file.id}}" aria-labelledby="delete_{{file.id}}" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

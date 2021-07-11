@@ -19,7 +19,7 @@ $(document).ready(function() {
         return text;
     }
 
-    const download = function(filename, entry_id) {
+    download = function(filename, entry_id) {
         // get text for file
         const text = getText(entry_id);
 
