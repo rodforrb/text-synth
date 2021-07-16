@@ -35,6 +35,8 @@ def request_update():
         if completion == '100':
             completion = 'Complete'
             text = f.text
+        elif completion == '0':
+            completion = 'Parsing'
         else:
             completion += '%'
         updates.append({'file_id':f.file_id, 'percent':completion, 'text':text})

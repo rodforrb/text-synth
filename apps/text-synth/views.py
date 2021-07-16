@@ -4,6 +4,7 @@ from flask_session import Session
 from flask_login import current_user, login_required, login_user, logout_user
 from extensions import db, login_manager
 from datetime import datetime
+import time
 
 from .parser import Parser
 from .sockets import *
@@ -33,7 +34,7 @@ def index():
         if request.method == 'POST':
             # Submit new file(s) and refresh
             dashboard_post()
-            # return redirect('/')
+            return redirect('/')
         return dashboard()
 
     # User is not logged in
@@ -52,6 +53,7 @@ def dashboard_post():
             return dashboard()
         # else process file upload
         upload()
+        
 
 def upload():
     '''Verify and process file upload'''

@@ -1,5 +1,6 @@
 from extensions import db, login_manager
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import enum
@@ -92,7 +93,9 @@ def get_user_files(user_id):
     return files
 
 def get_active_files(user_id):    
-    files = File.query.filter_by(user_id=user_id, status=Status.Parsing).all()
+    files = File.query.filter(File.user_id==user_id).filter(
+        or_(File.status==Status.Parsing, File.status==Status.Submitted)).all()
+
     for file in files:
         # so newly completed files only show up for updating once, mark as completed here
         if file.completion == 100:

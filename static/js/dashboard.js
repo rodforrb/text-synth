@@ -1,8 +1,13 @@
 $(document).ready(function() {
   var socket = io.connect();
 
+  var waiting = true;
+  var refreshTimer;
 
   socket.on("progress", function(raw) {
+    clearTimeout(refreshTimer);
+    waiting = false;
+
     const data = JSON.parse(raw);
     if(data.size > 0) {
       Array.prototype.forEach.call(data.updates, entry => {
@@ -18,7 +23,7 @@ $(document).ready(function() {
       });
     } else {
       // stop calling for updates when no files to update
-      // clearInterval(statusUpdater);
+      clearInterval(statusUpdater);
     }
   });
 
@@ -31,6 +36,13 @@ $(document).ready(function() {
 
   var statusUpdater = setInterval(function() {
     socket.emit('update');
+    if (!waiting) {
+      refreshTimer = setTimeout(function() {
+        location.reload();
+      }, 3000);
+      waiting = true;
+    }
+
   }, 2000);
   
   // global scope function for onclick download button
