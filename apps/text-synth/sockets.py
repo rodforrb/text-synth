@@ -30,8 +30,15 @@ def request_update():
     files = get_active_files(current_user.id)
     updates = []
     for f in files:
-        updates.append({'file_id':f.file_id, 'percent':f.completion})
+        completion = str(f.completion)
+        text = None
+        if completion == '100':
+            completion = 'Complete'
+            text = f.text
+        else:
+            completion += '%'
+        updates.append({'file_id':f.file_id, 'percent':completion, 'text':text})
     
     output = {'size':len(files), 'updates':updates}
     print(json.dumps(output))
-    io.emit('progress', data=(json.dumps(output)))
+    io.emit('progress', data=(json.dumps(output)), room=current_user.id)

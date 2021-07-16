@@ -170,8 +170,8 @@ def update_progress(file_id, percent):
     if percent < 0 or percent > 100:
         raise ValueError('Progress must be updated by percentage between 0-100')
     
-    file = File.query.filter_by(file_id=file_id).first()
     try:
+        file = File.query.filter_by(file_id=file_id).first()
         file.completion = int(percent)
         db.session.commit()
     except:

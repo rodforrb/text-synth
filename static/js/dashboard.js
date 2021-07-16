@@ -1,26 +1,25 @@
 $(document).ready(function() {
   var socket = io.connect();
 
+
   socket.on("progress", function(raw) {
     const data = JSON.parse(raw);
     if(data.size > 0) {
       Array.prototype.forEach.call(data.updates, entry => {
-        var entry_id = "status_" + String(entry.file_id);
-        var percent = String(entry.percent)
-        if (percent == 100) {
-          percent = 'Complete';
-        } else {
-          percent += '%';
-        }
+        var id = String(entry.file_id);
+        var entry_id = "status_" + id;
+        var text_id = "text_" + id;
+
+        var percent = String(entry.percent);
+        var text = entry.text;
+
         document.getElementById(entry_id).innerText = percent;
+        document.getElementById(text_id).innerText = text;
       });
+    } else {
+      // stop calling for updates when no files to update
+      // clearInterval(statusUpdater);
     }
-  });
-  
-  socket.on("complete", function(data) {
-    console.log(data);
-    var entry_id = "status_" + String(data.file_id);
-    document.getElementById(entry_id).innerText = 'Complete';
   });
 
   function getText(entry_id) {
@@ -30,11 +29,10 @@ $(document).ready(function() {
     return text;
   }
 
-  setInterval(function() {
+  var statusUpdater = setInterval(function() {
     socket.emit('update');
   }, 2000);
-
-
+  
   // global scope function for onclick download button
   download = function(filename, entry_id) {
     // get text for file

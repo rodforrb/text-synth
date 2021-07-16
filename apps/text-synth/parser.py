@@ -59,9 +59,9 @@ class Parser:
                 text_chunks.append(res)
             
 
-                # progressively update percentage, at most every 1 second
+                # progressively update percentage, at most every 2 second
                 cur_time = time.time()
-                if cur_time - prev_time > 1:
+                if cur_time - prev_time > 2:
                     prev_time = cur_time
 
                     percentage = 100 * read_size / input_size
