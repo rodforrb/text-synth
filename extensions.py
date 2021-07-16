@@ -30,7 +30,6 @@ rq = RQ()
 security = Security()
 login_manager = LoginManager()
 
-
 def security_init_kwargs():
     """
     **kwargs arguments passed down during security extension initialization by

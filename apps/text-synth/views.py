@@ -21,9 +21,9 @@ LANGUAGES = [
     #,'ar'
 ]
 
-# @app.before_app_first_request
-# def app_final_setup():
-#     create_test_db()
+@app.before_app_first_request
+def app_final_setup():
+    create_test_db()
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,7 +33,7 @@ def index():
         if request.method == 'POST':
             # Submit new file(s) and refresh
             dashboard_post()
-            return redirect('/')
+            # return redirect('/')
         return dashboard()
 
     # User is not logged in

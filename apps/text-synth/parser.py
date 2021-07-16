@@ -1,9 +1,11 @@
 import os
+import time
 import subprocess
 from io import BytesIO
 import json
 from vosk import Model, KaldiRecognizer, SetLogLevel
-from .models import Language
+from .models import Language, update_progress
+from .sockets import emit_complete, emit_progress
 
 MODELS_PATH = os.path.dirname(os.path.realpath(__file__)) + '/models/'
 
@@ -33,33 +35,43 @@ class Parser:
 
 
     # parse audio file from upload
-    def parse_file(self, file_data, language):
+    def parse_file(self, file, file_data):
+        language = file.language
         rec = self.get_recognizer(language)
         data_bytes = self.convert_audio(file_data)
         input_size = data_bytes.getbuffer().nbytes
         read_size = 0
-        last_percentage = 0
+        # last_percentage = 0
         text_chunks = []
 
         # feed input to recognizer in increments
+        prev_time = time.time()
+        cur_time = 0
         while True:
             data = data_bytes.read(4000)
             read_size += 4000
             if len(data) == 0:
                 break
             
+            # when a block of text is accepted
             if rec.AcceptWaveform(data):
                 res = json.loads(rec.Result())['text']
                 text_chunks.append(res)
             
-#            # progressively return percentage
-            completion = 100 * read_size / input_size
-            if completion - last_percentage > 5:
-                last_percentage = completion
-                print(f'Progress: {completion}%')
-                data = {'percentage' : completion}
-#               io.emit('progress', data)
+
+                # progressively update percentage, at most every 1 second
+                cur_time = time.time()
+                if cur_time - prev_time > 1:
+                    prev_time = cur_time
+
+                    percentage = 100 * read_size / input_size
+                    # if percentage - last_percentage > 5:
+                    # last_percentage = percentage
+                    print(f'Progress: {percentage}%')
+                    update_progress(file.file_id, percentage)
+
         print(f'Progress: 100%')
+        update_progress(file.file_id, 100)
             
         res = json.loads(rec.FinalResult())['text']
         text_chunks.append(res)

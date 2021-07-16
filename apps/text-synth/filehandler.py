@@ -4,7 +4,8 @@ import time
 from threading import Thread
 from werkzeug.utils import secure_filename
 from flask_login import current_user
-from .models import *
+from extensions import io
+from .models import load_file, save_file, update_text, File
 from .parser import Parser
 
 parser = Parser(['en','fa'])
@@ -47,7 +48,7 @@ class FileProcessor(object):
                 with self.appcontext:
                     self.ready = False
                     file_id = self.queue.get()
-                    filecontents, language = load_file(file_id)
-                    transcription = parser.parse_file(filecontents, language)
+                    file, filecontents = load_file(file_id)
+                    transcription = parser.parse_file(file, filecontents)
                     update_text(file_id, transcription)
                     self.ready = True

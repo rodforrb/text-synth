@@ -46,6 +46,7 @@ class File(db.Model):
     name = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     status = db.Column(db.Enum(Status), default=Status.Submitted)
+    completion = db.Column(db.Integer, default=0)
     language = db.Column(db.Enum(Language), nullable=False)
     text = db.Column(db.Text)
 
@@ -56,20 +57,15 @@ def create_test_db():
         u.password = "test"
         db.session.add(u)
 
-
-        db.session.commit()
-    except Exception as e:
-        print('test db already exists')
-        db.session.rollback()
-
-    try:
         f1 = File(user_id=1, name='filename1', language=Language.English)
         f2 = File(user_id=1, name='filename2', language=Language.English)
         db.session.add(f1)
         db.session.add(f2)
+
         db.session.commit()
+        
     except Exception as e:
-        print('files already exist')
+        print('test db already exists')
         db.session.rollback()
 
 def create_user(name, email, password):
@@ -94,7 +90,20 @@ def authenticate_user(useremail, password):
 def get_user_files(user_id):
     files = File.query.filter_by(user_id=user_id).all()
     return files
-    
+
+def get_active_files(user_id):    
+    files = File.query.filter_by(user_id=user_id, status=Status.Parsing).all()
+    for file in files:
+        # so newly completed files only show up for updating once, mark as completed here
+        if file.completion == 100:
+            try:
+                file.status = Status.Complete
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+    return files
+
 @login_manager.user_loader
 def load_user(userid):
     return User.query.filter_by(id=userid).first()
@@ -127,17 +136,15 @@ def save_file(user_id, file, lang_code):
 def load_file(file_id):
     '''
     Load a file from disk given its file id
-    Return the File object and language
+    Return the File db object and contents
     '''
 
     filecontents = ''
-    language = None
     
     with open(UPLOAD_FOLDER + str(file_id), 'rb') as filein:
         filecontents = filein.read()
 
     file = File.query.filter_by(file_id=file_id).first()
-    language = file.language
 
     try:
         file.status = Status.Parsing
@@ -146,14 +153,26 @@ def load_file(file_id):
         db.session.rollback()
         raise
 
-    return filecontents, language
+    return file, filecontents
 
 def update_text(file_id, text):
     '''Update the text field for a given file id'''
     try:
         file = File.query.filter_by(file_id=file_id).first()
         file.text = text
-        file.status = Status.Complete
+        db.session.commit()
+    except:
+        db.session.rollback()
+        raise
+
+def update_progress(file_id, percent):
+    '''Update the progress of a file given its completion percentage'''
+    if percent < 0 or percent > 100:
+        raise ValueError('Progress must be updated by percentage between 0-100')
+    
+    file = File.query.filter_by(file_id=file_id).first()
+    try:
+        file.completion = int(percent)
         db.session.commit()
     except:
         db.session.rollback()
