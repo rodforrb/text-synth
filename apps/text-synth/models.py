@@ -89,10 +89,19 @@ def authenticate_user(useremail, password):
         return None
 
 def get_user_files(user_id):
+    '''
+    Get all files for a user given a user_id
+    returns a list of File objects
+    '''
     files = File.query.filter_by(user_id=user_id).all()
     return files
 
 def get_active_files(user_id):    
+    '''
+    Get all active files for a user given a user_id
+    active files are those not finished parsing, where the completion status is still updating
+    returns a list of File objects
+    '''
     files = File.query.filter(File.user_id==user_id).filter(
         or_(File.status==Status.Parsing, File.status==Status.Submitted)).all()
 

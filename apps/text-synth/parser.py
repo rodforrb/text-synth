@@ -34,10 +34,15 @@ class Parser:
             self.languages.append(Language.Arabic)
 
 
-    # parse audio file from upload
     def parse_file(self, file, file_data):
+        '''
+        Parse a file from upload given the File object and the actual file's disk contents
+        updates the completion progress in the File object during parsing
+        returns the parsed text from the file
+        '''
         language = file.language
         rec = self.get_recognizer(language)
+
         data_bytes = self.convert_audio(file_data)
         input_size = data_bytes.getbuffer().nbytes
         read_size = 0
@@ -78,7 +83,13 @@ class Parser:
         return ' '.join(text_chunks)
 
     # convert audio input to .wav format bytes
-    def convert_audio(self, input):
+    def convert_audio(self, input_bytes):
+        '''
+        Convert audio input to .wav format bytes
+        takes Bytes representing whole audio file contents
+        returns BytesIO of audio converted to .wav
+        '''
+        # start an ffmpeg subprocess to convert the audio
         process = subprocess.Popen(['ffmpeg', 
                                     '-loglevel', 'quiet',
                                     '-i', '-',
@@ -88,7 +99,8 @@ class Parser:
                                     '-'],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
-        p_out, err = process.communicate(input=input, timeout=None)
+
+        p_out, err = process.communicate(input=input_bytes, timeout=None)
         return BytesIO(p_out)
     
     def new_model(self, language):
@@ -103,7 +115,7 @@ class Parser:
         return rec
 
     def get_recognizer(self, language):
-        '''Take 2 letter language code and return its corresponding model'''
+        '''Take 2 letter language code and return its existing model'''
         if language not in self.languages:
             raise ValueError('Language not supported or activated')
         rec = None

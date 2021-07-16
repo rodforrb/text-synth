@@ -26,7 +26,21 @@ def emit_complete(user_id, file_id):
 @io.on('update')
 @login_required
 def request_update():
-    '''Process the request to update file completions'''
+    '''
+    Process socketio request to update file completions
+    sends back a json object with active file completion stati and completed text
+    '''
+
+    '''
+    JSON format:
+        {'size' : size,
+         'updates' : [ {'file_id' : id,
+                        'percent' : percent,
+                        'text' : text
+                       }, ...
+          ]
+        }
+    '''
     files = get_active_files(current_user.id)
     updates = []
     for f in files:
@@ -42,5 +56,4 @@ def request_update():
         updates.append({'file_id':f.file_id, 'percent':completion, 'text':text})
     
     output = {'size':len(files), 'updates':updates}
-    print(json.dumps(output))
     io.emit('progress', data=(json.dumps(output)), room=current_user.id)
