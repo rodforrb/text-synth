@@ -36,7 +36,7 @@ $(document).ready(function() {
 
   var statusUpdater = setInterval(function() {
     socket.emit('update');
-    // if not exists, create a timeout to refresh the page if the socket is not responding to update requests
+    // if not exists, create a timeout to reconnect if the socket is not responding to update requests
     if (!waiting) {
       refreshTimer = setTimeout(function() {
         socket = io.connect();
