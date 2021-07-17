@@ -39,7 +39,7 @@ $(document).ready(function() {
     // if not exists, create a timeout to refresh the page if the socket is not responding to update requests
     if (!waiting) {
       refreshTimer = setTimeout(function() {
-        location.reload();
+        socket = io.connect();
       }, 3000);
       waiting = true;
     }

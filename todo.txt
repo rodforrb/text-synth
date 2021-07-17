@@ -3,12 +3,9 @@ Users:
     - add user auth
 
 Other:
-    - progress bar and live table
-    - control buttons
-        save (working)
-        copy, delete
     - file length
     - correct timezones
+    - table order by file_id
 
 
 Pages:
