@@ -14,9 +14,8 @@ flask-jsglue
 flask-socketio==4.3.2
 flask-debugtoolbar
 flask-session
-vosk
+https://github.com/alphacep/vosk-api/releases/download/v0.3.27/vosk-0.3.27-py3-none-linux_x86_64.whl
 gunicorn
 eventlet==0.30.2
 requests
 beautifulsoup4
-uwsgi

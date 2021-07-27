@@ -9,6 +9,9 @@ ENV HOME /home/${USR}
 ENV PROJECT_DIR ${HOME}/code
 ENV PYTHONUNBUFFERED 1
 
+ENV HOST=127.0.0.1
+ENV HOST_PORT=5000
+
 # module holding our project instance
 ENV FLASK_APP=wsgi.py
 ENV FLASK_DEBUG=1
@@ -20,13 +23,10 @@ RUN addgroup -g 1000 ${USR}\
   && adduser -S -h ${HOME} -u 1000 -G ${USR} ${USR}
 
 COPY --chown=nonroot:nonroot . ${PROJECT_DIR}
+
 RUN apk add --no-cache --update fish
-RUN apk add --no-cache --update --virtual \
-  gcc\
-  make\
-  g++\
-  zlib-dev\
-  libc-dev\&& pip --no-cache-dir install -r ${PROJECT_DIR}/requirements.txt
+RUN apk add gcc libc-dev zlib-dev libffi-dev g++ make
+RUN pip install --no-cache-dir -r ${PROJECT_DIR}/requirements.txt
 
 # we make sure to run the project as a regular user
 USER ${USR}
