@@ -1,10 +1,9 @@
 Users:
-    - user login page
-    - add user auth
+    - new user
 
 Other:
     - file length
-    - correct timezones
+    - correct timezones?
     - table order by file_id
 
 
@@ -12,9 +11,3 @@ Pages:
     main/landing
 
     login
-
-    dashboard
-        upload button
-        submitted table
-            name, date, language, status, download/save
-        
