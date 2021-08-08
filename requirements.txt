@@ -19,3 +19,4 @@ gunicorn
 eventlet==0.30.2
 requests
 beautifulsoup4
+redis

@@ -5,6 +5,9 @@ Other:
     - file length
     - correct timezones?
     - table order by file_id
+    - total # files
+    - redis
+    - separate backend processor
 
 
 Pages:
