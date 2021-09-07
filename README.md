@@ -17,7 +17,7 @@ Holds most of the configuration.
 
 Project extensions are defined and loaded here.
 
-## apps/text-synth/
+## apps/text_synth/
 
 Main Python app functionality.
 

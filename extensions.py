@@ -11,8 +11,11 @@ from flask_security import Security
 from flask_marshmallow import Marshmallow
 from flask_jsglue import JSGlue
 from flask_socketio import SocketIO
-from flask_rq2 import RQ
 from flask_login import LoginManager
+
+from rq import Queue
+from rq.job import Job
+from config import conn
 
 toolbar = None
 
@@ -26,7 +29,7 @@ migrate = Migrate(db=db)
 ma = Marshmallow()
 glue = JSGlue()
 io = SocketIO()
-rq = RQ()
+q = Queue(connection=conn)
 security = Security()
 login_manager = LoginManager()
 

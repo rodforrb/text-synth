@@ -9,7 +9,7 @@ import pathlib
 import sys
 import types
 
-app_path = 'apps/text-synth/'
+app_path = 'apps/text_synth/'
 
 def import_module_from_path(path: os.PathLike) -> types.ModuleType:
     """Import a module from the given path."""

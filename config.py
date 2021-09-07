@@ -4,10 +4,13 @@ import logging
 from datetime import timedelta
 from typing import Dict
 from typing import List
+from redis import from_url
 
-project_name = "text-synth"
+project_name = "text_synth"
 SQLALCHEMY_DATABASE_URI_TMPL = "sqlite:////tmp/%(name)s.sqlite"
 
+redis_url = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+conn = from_url(redis_url)
 
 # base config class; extend it to your needs.
 class Config(object):
@@ -101,7 +104,7 @@ class Config(object):
         'extensions.io'
     ]
 
-    BLUEPRINTS: List = [('text-synth', {'url_prefix': ''})]
+    BLUEPRINTS: List = [('text_synth', {'url_prefix': ''})]
 
 
 # config class for development environment

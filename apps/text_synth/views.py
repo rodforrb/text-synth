@@ -11,7 +11,7 @@ from .sockets import *
 from .models import *
 from .filehandler import FileHandler
 
-app = Blueprint('text-synth', __name__, template_folder='templates')
+app = Blueprint('text_synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a', 'amr'}
 
 filequeue = FileHandler()
