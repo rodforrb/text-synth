@@ -31,18 +31,14 @@ class FileHandler:
         user_id = current_user.id
         # save file to disk and acquire id
         file_id = save_file(user_id, file, language)
-        
-        # for redisqueue
-        self.queue_task(file_id)
+        return file_id
+        # # for redisqueue
+        # queue_task(file_id)
 
         # for fileprocessor
         # self.processor.queue.put(file_id)
     
-    def queue_task(self, file_id):
-        job = q.enqueue_call(
-            func=background_process_file, args=(file_id,), result_ttl=5000
-        )
-        print(f'Job queued: {job.get_id()}')
+    
 
 class FileProcessor(object):
     '''Processor to retrieve and process files asynchronously'''
@@ -70,8 +66,15 @@ class FileProcessor(object):
                     self.ready = True
 
 
+def queue_task(file_id):
+    # job = q.enqueue_call(
+    #     func="filehandler.background_process_file", args=(file_id,), result_ttl=5000
+    # )
+    job = q.enqueue(background_process_file, (file_id,))
+    print(f'Job queued: {job.get_id()}')
+
 def background_process_file(file_id):
-    '''function enqueued in redisqueue to process files in the background'''
+    '''Function enqueued in redisqueue to process files in the background'''
     # retrieve file data from disk
     file, filecontents = load_file(file_id)
     # transcribe file

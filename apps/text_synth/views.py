@@ -9,7 +9,7 @@ import time
 from .parser import Parser
 from .sockets import *
 from .models import *
-from .filehandler import FileHandler
+from .filehandler import FileHandler, queue_task
 
 app = Blueprint('text_synth', __name__, template_folder='templates')
 ALLOWED_EXTENSIONS = {'wav', 'ogg', 'mp3', 'm4a', 'amr'}
@@ -84,7 +84,9 @@ def upload():
             if filequeue.appcontext == None:
                 filequeue.set_app_context(current_app.app_context())
             # enqueue valid file
-            filequeue.put(file, language)
+            id = filequeue.put(file, language)
+
+            queue_task(id)
 
 def allowed_file(filename):
     '''Check if file has valid extension'''
