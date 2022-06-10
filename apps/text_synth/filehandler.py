@@ -70,8 +70,11 @@ def queue_task(file_id):
     # job = q.enqueue_call(
     #     func="filehandler.background_process_file", args=(file_id,), result_ttl=5000
     # )
-    job = q.enqueue(background_process_file, (file_id,))
+    job = q.enqueue('apps.text_synth.filehandler.background_print_file', file_id)
     print(f'Job queued: {job.get_id()}')
+
+def background_print_file(file_id):
+    print(f'File queued background: {file_id}')
 
 def background_process_file(file_id):
     '''Function enqueued in redisqueue to process files in the background'''
